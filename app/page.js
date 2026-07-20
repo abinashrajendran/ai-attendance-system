@@ -11,11 +11,9 @@ export default function StudentPage() {
 
         navigator.geolocation.getCurrentPosition(async (pos) => {
             const { latitude, longitude } = pos.coords;
-
-            setMsg("Location OK. Verify Fingerprint...");
+            setMsg("Location OK. Verify Biometrics...");
             
             try {
-                // Biometric Prompt (Works on HTTPS)
                 await navigator.credentials.get({
                     publicKey: { challenge: new Uint8Array([1,2,3,4]), timeout: 60000, userVerification: "required", allowCredentials: [] }
                 });
@@ -39,6 +37,9 @@ export default function StudentPage() {
                 <input className="w-full border p-3 rounded-lg mb-4" placeholder="Student ID" onChange={e => setSid(e.target.value)} />
                 <button onClick={handleAttendance} className="w-full bg-blue-600 text-white p-3 rounded-lg font-bold">Mark Present</button>
                 <p className="mt-4 font-semibold text-gray-600">{msg}</p>
+                <div className="mt-6">
+                   <a href="/advisor" className="text-sm text-blue-500 hover:underline">Advisor Dashboard</a>
+                </div>
             </div>
         </div>
     );
