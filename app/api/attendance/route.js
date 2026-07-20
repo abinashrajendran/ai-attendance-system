@@ -5,7 +5,7 @@ import { NextResponse } from 'next/server';
 
 const CLASS_LAT = 13.0827; 
 const CLASS_LON = 80.2707; 
-const RADIUS = 50;
+const RADIUS = 100; // Testing-ku 100 meters vachukkonga
 
 function calculateDistance(lat1, lon1, lat2, lon2) {
     const R = 6371e3; 
@@ -21,14 +21,13 @@ export async function POST(req) {
     try {
         const { studentID, lat, lon } = await req.json();
 
-        // Database logic
         const { data: student, error: studentError } = await supabase
             .from('students')
             .select('*')
             .eq('student_id', studentID)
             .single();
 
-        if (!student || studentError) {
+        if (studentError || !student) {
             return NextResponse.json({ success: false, message: "Student not found!" });
         }
 
@@ -38,8 +37,8 @@ export async function POST(req) {
         }
 
         await supabase.from('attendance').insert([{ student_id: studentID, status: 'Present' }]);
-        return NextResponse.json({ success: true, message: "Attendance Marked Successfully!" });
+        return NextResponse.json({ success: true, message: "Attendance Marked!" });
     } catch (error) {
-        return NextResponse.json({ success: false, message: "Server Error" });
+        return NextResponse.json({ success: false, message: "Server error" });
     }
 }
