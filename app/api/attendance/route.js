@@ -19,12 +19,9 @@ function calculateDistance(lat1, lon1, lat2, lon2) {
 
 export async function POST(req) {
     try {
-        if (!supabase) {
-            return NextResponse.json({ success: false, message: "Database Config Missing" });
-        }
-
         const { studentID, lat, lon } = await req.json();
 
+        // Database logic
         const { data: student, error: studentError } = await supabase
             .from('students')
             .select('*')
